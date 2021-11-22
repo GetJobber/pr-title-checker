@@ -21,10 +21,14 @@ async function run() {
       core.setFailed(`Couldn't retrieve the config file specified - ${e}`);
       return;
     }
-    let { CHECKS, LABEL } = JSON.parse(config);
+    let { CHECKS, LABEL, MESSAGES } = JSON.parse(config);
     LABEL.name = LABEL.name || "title needs formatting";
     LABEL.color = LABEL.color || "eee";
     CHECKS.ignoreLabels = CHECKS.ignoreLabels || [];
+    MESSAGES = MESSAGES || {};
+    MESSAGES.success = MESSAGES.sucess || "All OK";
+    MESSAGES.failure = MESSAGES.failure || "Failing CI test";
+    MESSAGES.notice = MESSAGES.notice || "";
 
     for (let i = 0; i < labels.length; i++) {
       for (let j = 0; j < CHECKS.ignoreLabels.length; j++) {
@@ -51,7 +55,7 @@ async function run() {
     if (CHECKS.prefixes && CHECKS.prefixes.length) {
       for (let i = 0; i < CHECKS.prefixes.length; i++) {
         if (title.startsWith(CHECKS.prefixes[i])) {
-          removeLabel(LABEL.name);
+          removeLabel(LABEL.name, CHECKS.alwaysPassCI);
           return;
         }
       }
@@ -60,42 +64,51 @@ async function run() {
     if (CHECKS.regexp) {
       let re = new RegExp(CHECKS.regexp, CHECKS.regexpFlags || '');
       if (re.test(title)) {
-        removeLabel(LABEL.name);
+        removeLabel(LABEL.name, CHECKS.alwaysPassCI);
         return;
       }
     }
-
-    addLabel(LABEL.name, CHECKS.alwaysPassCI);
+    
+    await titleCheckFailed();
   } catch (error) {
     core.info(error);
   }
 }
 
-async function addLabel(name, alwaysPassCI) {
+async function titleCheckFailed(LABEL, CHECKS, MESSAGES) {
   try {
-    core.info(`Adding label (${name}) to PR...`);
-    let addLabelResponse = await octokit.issues.addLabels({
-      owner,
-      repo,
-      issue_number,
-      labels: [name],
-    });
-    core.info(`Added label (${name}) to PR - ${addLabelResponse.status}`);
-    if (!alwaysPassCI) {
-      core.setFailed("Failing CI test");
+    if (MESSAGES.notice.length) {
+      core.notice(MESSAGES.notice);
     }
-    core.info("All OK");
+    
+    await addLabel(LABEL.name);
+
+    if (!CHECKS.alwaysPassCI) {
+      core.setFailed(MESSAGES.failure);
+    }
+    core.info(MESSAGES.success);
   } catch (error) {
     core.info(error);
-    if (alwaysPassCI) {
+    if (CHECKS.alwaysPassCI) {
       core.info(`Failed to add label (${name}) to PR`);
     } else {
       core.setFailed(`Failed to add label (${name}) to PR`);
     }
-  }
+  }  
 }
 
-async function removeLabel(name) {
+async function addLabel(name) {
+  core.info(`Adding label (${name}) to PR...`);
+  let addLabelResponse = await octokit.issues.addLabels({
+    owner,
+    repo,
+    issue_number,
+    labels: [name],
+  });
+  core.info(`Added label (${name}) to PR - ${addLabelResponse.status}`);
+}
+
+async function removeLabel(name, alwaysPassCI) {
   try {
     core.info("No formatting necessary. Removing label...");
     let removeLabelResponse = await octokit.issues.removeLabel({
