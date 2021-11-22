@@ -26,7 +26,7 @@ async function run() {
     LABEL.color = LABEL.color || "eee";
     CHECKS.ignoreLabels = CHECKS.ignoreLabels || [];
     MESSAGES = MESSAGES || {};
-    MESSAGES.success = MESSAGES.sucess || "All OK";
+    MESSAGES.success = MESSAGES.success || "All OK";
     MESSAGES.failure = MESSAGES.failure || "Failing CI test";
     MESSAGES.notice = MESSAGES.notice || "";
 
