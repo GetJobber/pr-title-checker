@@ -27,7 +27,7 @@ async function run() {
     CHECKS.ignoreLabels = CHECKS.ignoreLabels || [];
     MESSAGES = MESSAGES || {};
     MESSAGES.success = MESSAGES.success || "All OK";
-    MESSAGES.failure = MESSAGES.failure || "Failing CI test";
+    MESSAGES.failure = MESSAGES.failure || "Failing CI test2";
     MESSAGES.notice = MESSAGES.notice || "";
 
     for (let i = 0; i < labels.length; i++) {
@@ -144,7 +144,7 @@ async function handleOctokitError(e) {
   if (passOnOctokitError) {
     core.info("Passing CI regardless");
   } else {
-    core.setFailed("Failing CI test");
+    core.setFailed("Failing CI test3");
   }
 }
 
