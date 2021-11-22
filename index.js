@@ -69,13 +69,13 @@ async function run() {
       }
     }
     
-    await titleCheckFailed();
+    await titleCheckFailed(CHECKS, LABEL, MESSAGES);
   } catch (error) {
     core.info(error);
   }
 }
 
-async function titleCheckFailed(LABEL, CHECKS, MESSAGES) {
+async function titleCheckFailed(CHECKS, LABEL, MESSAGES) {
   try {
     if (MESSAGES.notice.length) {
       core.notice(MESSAGES.notice);
