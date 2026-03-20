@@ -64,7 +64,7 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: thehanimo/pr-title-checker@v1.4.3
+      - uses: thehanimo/pr-title-checker@v2.0.0
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           pass_on_octokit_error: false
@@ -81,7 +81,7 @@ This action now runs on the Node 24 Actions runtime. Self-hosted runners need Ac
 ```yaml
 ...
     steps:
-      - uses: thehanimo/pr-title-checker@v1.4.3
+      - uses: thehanimo/pr-title-checker@v2.0.0
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           pass_on_octokit_error: false
@@ -94,7 +94,7 @@ Note that this has to be a url pointing to a valid, raw json file. See [#28](htt
 ```yaml
 ...
     steps:
-      - uses: thehanimo/pr-title-checker@v1.4.3
+      - uses: thehanimo/pr-title-checker@v2.0.0
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           pass_on_octokit_error: false
@@ -110,7 +110,7 @@ Note that this has to be a url pointing to a valid, raw json file. See [#28](htt
 ```yaml
 ...
     steps:
-      - uses: thehanimo/pr-title-checker@v1.4.3
+      - uses: thehanimo/pr-title-checker@v2.0.0
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           pass_on_octokit_error: false
@@ -125,7 +125,7 @@ You can use the action output to execute follow up steps e.g. adding a comment.
 
 ```yml
     steps:
-      - uses: thehanimo/pr-title-checker@v1.4.3
+      - uses: thehanimo/pr-title-checker@v2.0.0
         id: check
         continue-on-error: true
         with:
