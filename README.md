@@ -73,8 +73,6 @@ jobs:
 
 To learn more about workflows, see [Create an example workflow.](https://docs.github.com/en/actions/using-workflows/about-workflows#create-an-example-workflow)
 
-This action now runs on the Node 24 Actions runtime. Self-hosted runners need Actions Runner `v2.327.1` or newer.
-
 ## Other ways to specify config file
 
 ### 1. Remote URL to a valid JSON file
